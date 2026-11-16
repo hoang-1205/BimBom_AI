@@ -1,0 +1,5 @@
+{
+  "nganh_hoc": ["Công nghệ thông tin"],
+  "ky_nang": {"Python": 3, "SQL": 2, "Excel": 3, "Phân tích dữ liệu": 2, "Giao tiếp": 3},
+  "kinh_nghiem_lien_quan": {"phan_tich_du_lieu": 1, "lap_trinh_python": 0, "phan_tich_nghiep_vu": 0}
+}

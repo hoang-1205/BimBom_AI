@@ -1,0 +1,8 @@
+{
+  "ghi_chu": "Tiêu chí minh họa do dự án đặt ra, không phải chuẩn tuyển dụng hoặc thống kê thị trường. Hãy sửa theo vị trí thực tế.",
+  "nghe": [
+    {"id": "phan_tich_du_lieu", "ten": "Phân tích dữ liệu", "ky_nang": {"Python": 3, "SQL": 3, "Excel": 3, "Phân tích dữ liệu": 3}, "nganh_hoc": ["Công nghệ thông tin", "Thống kê", "Toán", "Kinh tế"], "so_nam_muc_tieu": 2},
+    {"id": "lap_trinh_python", "ten": "Lập trình Python", "ky_nang": {"Python": 4, "SQL": 2, "Git": 2, "Kiểm thử phần mềm": 2}, "nganh_hoc": ["Công nghệ thông tin", "Khoa học máy tính", "Kỹ thuật phần mềm"], "so_nam_muc_tieu": 2},
+    {"id": "phan_tich_nghiep_vu", "ten": "Phân tích nghiệp vụ", "ky_nang": {"Giao tiếp": 4, "Excel": 3, "Phân tích yêu cầu": 3, "Viết tài liệu": 3}, "nganh_hoc": ["Công nghệ thông tin", "Quản trị kinh doanh", "Kinh tế"], "so_nam_muc_tieu": 2}
+  ]
+}
