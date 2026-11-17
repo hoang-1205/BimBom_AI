@@ -7,9 +7,10 @@ from Model_BimBomAI.pipeline import load_model, generate
 from Model_BimBomAI.ky_nang import search, save_draft
 from Model_BimBomAI.bo_nho import retrieve
 from Model_BimBomAI.bao_cao import save_review
+from Model_BimBomAI.Ma_Nguon.runtime import session_lock, read_input, check_stop
 
 
-def main():
+def legacy_main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--checkpoint', type=Path)
     p.add_argument('--prompt')
@@ -29,6 +30,7 @@ def main():
     print(f'Device: {device}')
     model, tokenizer, _ = load_model(a.checkpoint, device) if a.checkpoint else (None, None, None)
     def respond(question):
+        check_stop()
         if a.skills:
             hits = search(question)
             result = '\n\n'.join(f"{'TRÙNG KHỚP' if exact else 'GỢI Ý CẦN KIỂM TRA'}\n{entry['answer']}\n{entry['workflow']}\nNguồn: {path}"
@@ -65,13 +67,21 @@ def main():
         print('Nhập /thoat để kết thúc.')
         while True:
             try:
-                question = input('Bạn: ').strip()
+                question = read_input('Bạn: ').strip()
             except (EOFError, KeyboardInterrupt):
                 break
-            if question == '/thoat':
+            if question in ('/thoat', '/exit', '/stop', '/tat'):
                 break
             if question:
                 respond(question)
+
+
+def main():
+    try:
+        with session_lock(kind='chat'):
+            legacy_main()
+    except (ValueError, RuntimeError, OSError) as error:
+        raise SystemExit(f'Lỗi: {error}') from error
 
 
 if __name__ == '__main__':

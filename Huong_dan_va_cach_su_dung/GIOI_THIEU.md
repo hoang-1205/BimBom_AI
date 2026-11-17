@@ -1,35 +1,44 @@
 # Giới thiệu BimBom AI
 
-[Giới thiệu](GIOI_THIEU.md) | [Sử dụng](CACH_SU_DUNG.md) | [Huấn luyện](HUAN_LUYEN.md)
+[Cách sử dụng](CACH_SU_DUNG.md) | [Phân tích hồ sơ và lệnh cũ](PHAN_TICH_VA_LENH_CU.md)
 
-## Mục tiêu
+## Bắt đầu đọc từ đâu?
 
-Hỗ trợ đối chiếu ngành học, kỹ năng, mức năng lực tự khai báo và kinh nghiệm liên quan với tiêu chí công việc; trình bày kết quả và phần còn thiếu để giáo viên kiểm tra.
+- Mở/tắt AI, chat, dạy bộ nhớ, huấn luyện và xử lý lỗi: [CACH_SU_DUNG.md](CACH_SU_DUNG.md).
+- Phân tích hồ sơ theo tiêu chí, xuất báo cáo cho giáo viên và các lệnh tương thích cũ: [PHAN_TICH_VA_LENH_CU.md](PHAN_TICH_VA_LENH_CU.md).
 
-## Hai phần riêng biệt
+Hướng dẫn sử dụng hiện tại nằm trong thư mục này. Tệp `HUONG_DAN_BIMBOM_AI.md` ở gốc dự án chỉ dẫn đến đây để tránh có nhiều bản hướng dẫn đầy đủ bị lệch nhau.
 
-| Phần | Cách hoạt động | Cần huấn luyện? |
-| --- | --- | --- |
-| phan_tich.py | Chấm điểm theo tiêu chí nghề viết sẵn | Không |
-| train.py và chat.py có checkpoint | Transformer học dự đoán token tiếp theo | Có |
-| chat.py --rag | Tra cứu từ khóa trong tài liệu, kèm nguồn | Không cần checkpoint nếu chỉ tra cứu |
-| chat.py --skills | Tìm câu trả lời/kỹ năng đã được duyệt | Không |
+## BimBom làm được gì?
 
-Phần chấm điểm hiện chưa phải mô hình đã học cách đánh giá con người. Mô hình ngôn ngữ hiện chưa có trọng số được huấn luyện. Đổi tiêu chí chấm điểm không cập nhật trọng số; chạy train.py cũng không thay công thức của phan_tich.py.
+| Chức năng | Cách hoạt động |
+| --- | --- |
+| Chat | Sinh câu trả lời bằng mô hình cục bộ khi có checkpoint; thông báo rõ khi chưa có mô hình đã học. |
+| Bộ nhớ | Lưu, xem, sửa, xóa kiến thức do người dùng xác nhận; đọc lại ghi nhớ liên quan ở phiên sau. |
+| Quy tắc và quy trình | Lưu bằng `/rule` và `/workflow`, đưa nội dung liên quan vào ngữ cảnh chat. |
+| Duyệt dữ liệu chat | `/correct` tạo bản nháp; `/approve` xác nhận để xuất cặp hỏi/đáp cho huấn luyện. |
+| Pretrain | Học ngôn ngữ từ văn bản đã chuẩn bị, khởi tạo mô hình và tokenizer từ đầu. |
+| SFT | Học cách trả lời từ cặp hỏi/đáp đã duyệt, dùng trọng số và tokenizer của checkpoint nền. |
+| Học tiếp | Khôi phục checkpoint hợp lệ hoặc giữ trọng số để học tập dữ liệu mới. |
+| Tắt phiên | `run stop bimbom` hoặc `run tat bimbom`; train lưu checkpoint trước khi dừng. |
+| Phân tích hồ sơ | Chức năng riêng `phan_tich.py`, đối chiếu với tiêu chí viết sẵn, không cần mô hình đã huấn luyện. |
 
-## Phân tích theo tiêu chí
+## Phân biệt ba việc
 
-- Hồ sơ gồm ngành học, mức kỹ năng 0–5 và số năm kinh nghiệm liên quan theo từng nghề.
-- Điểm mẫu: kỹ năng tối đa 70, ngành học 15, kinh nghiệm 15.
-- Kết quả gồm điểm thành phần, mức đầy đủ dữ liệu, kỹ năng đạt/chưa đạt mục tiêu và thông tin chưa khai báo.
-- Tiêu chí của ba nghề mẫu là minh họa, cần chỉnh theo công việc thực tế.
+**Lưu bộ nhớ:** `/remember` ghi thông tin lên đĩa sau xác nhận. Thông tin có thể được đưa vào ngữ cảnh ở lần chat sau, nhưng trọng số mô hình không thay đổi.
 
-Điểm không phải xác suất thành công, quyết định tuyển dụng hay đánh giá năng lực tổng quát. Thiếu thông tin không chứng minh thiếu năng lực. Cần đối chiếu bài thực hành và minh chứng kinh nghiệm.
+**Duyệt ví dụ:** `/correct` và `/approve` chuẩn bị dữ liệu học. Chỉ việc duyệt chưa khiến mô hình học ví dụ đó.
 
-## Giáo viên kiểm tra
+**Huấn luyện:** `run train bimbom` mới cập nhật trọng số. Tiếp tục cùng dữ liệu dùng checkpoint; học dữ liệu mới dùng `--init-from`. Chất lượng phụ thuộc dữ liệu, kiến trúc và quá trình đánh giá; mô hình nhỏ chưa chắc trò chuyện tốt.
 
-Mỗi lượt chat hoặc phân tích hồ sơ tự lưu file Markdown trong Ket_Qua, gồm đầu vào, kết quả, nguồn và mục nhận xét. Tệp mặc định chờ kiểm tra. Giáo viên sửa nhận xét không tự làm AI học thêm; việc duyệt kỹ năng và huấn luyện là các bước riêng.
+## Trạng thái và cách vận hành
 
-## Trạng thái hiện tại
+Dự án đã được đặt lại và nâng cấp ngày 18/11/2026, không tạo sao lưu. Tại lần bàn giao sau dọn dẹp, AI chính chưa có dữ liệu học hoặc checkpoint. Trạng thái có thể thay đổi khi bạn sử dụng; chạy `run status bimbom` để xem thông tin hiện tại.
 
-Chưa có checkpoint, tokenizer đã huấn luyện, kết quả cũ hoặc kỹ năng đã duyệt. Môi trường Python và mã đã sẵn có; tài liệu gốc vẫn được giữ. Bộ tests, Sao_Luu và kế hoạch cũ đã được gỡ. Các thư mục phát sinh sẽ được chương trình tạo khi dùng.
+Dùng duy nhất môi trường Python tại `D:\BimBom_AI\Model_BimBomAI\.venv`. Chat và train chạy lần lượt. Trong cửa sổ chat, `/tat`, `/stop`, `/exit` và `/thoat` đều thoát phiên. Lệnh tắt BimBom không tắt máy tính và không xóa bộ nhớ.
+
+## Phân tích hồ sơ và báo cáo
+
+`phan_tich.py` dùng tiêu chí nghề viết sẵn, không phải mô hình đã học cách đánh giá con người. Điểm cho biết mức đối chiếu theo dữ liệu nhập, không phải xác suất thành công hoặc quyết định tuyển dụng. Tiêu chí mẫu cần được điều chỉnh và kiểm tra với minh chứng thực tế.
+
+Phân tích hồ sơ và `chat.py` cũ có thể xuất Markdown để giáo viên xem xét. `run chat bimbom` lưu hội thoại theo cấu hình `LOG_CHAT` và dùng quy trình duyệt riêng. Ghi nhận xét vào báo cáo không tự cập nhật trọng số hoặc tự đưa dữ liệu vào huấn luyện.

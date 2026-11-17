@@ -1,0 +1,8 @@
+Model_BimBomAI/.venv/
+__pycache__/
+*.pyc
+*.tmp
+Ket_Qua/
+Bo_Nho_BimBom/
+Ky_Nang_BimBom_Hoc_Duoc/
+Hoc_BimBom/

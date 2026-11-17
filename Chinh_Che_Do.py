@@ -1,5 +1,12 @@
 """Cấu hình chung cho train.py và chat.py; sửa các giá trị bên dưới."""
 CHE_DO = "auto"  # cpu | cuda | auto
+CHAT_MODE = "CHAT_MEMORY"  # CHAT_ONLY | CHAT_MEMORY | CHAT_COLLECT_TRAIN
+MAX_CONTEXT_TOKENS = 256
+MAX_NEW_TOKENS = 100
+TEMPERATURE = 0.8
+RESUME_POLICY = "latest_valid"  # latest_valid | never
+MEMORY_REQUIRES_CONFIRMATION = True
+LOG_CHAT = True
 MODEL_LAYERS = 4
 MODEL_DIM = 256
 MODEL_HEADS = 4

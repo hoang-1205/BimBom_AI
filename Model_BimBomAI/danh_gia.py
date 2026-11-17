@@ -12,9 +12,11 @@ import torch
 import torch.nn.functional as F
 import Chinh_Che_Do as C
 from Model_BimBomAI.pipeline import ROOT, load_model, generate
+from Model_BimBomAI.Ma_Nguon.data import training_batch
+from Model_BimBomAI.Ma_Nguon.runtime import session_lock, check_stop
 
 
-def main():
+def evaluate_main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('checkpoints', nargs='+', type=Path)
     p.add_argument('--device', choices=['cpu', 'cuda', 'auto'])
@@ -28,14 +30,13 @@ def main():
         if device.type == 'cuda':
             torch.cuda.reset_peak_memory_stats()
         source = torch.tensor(saved['data']['validation'], dtype=torch.long)
-        length = min(model.context, len(source)-1)
+        targets = torch.tensor((saved.get('labels') or saved['data'])['validation'], dtype=torch.long)
         gen = torch.Generator().manual_seed(123)
         losses = []
         with torch.no_grad():
             for _ in range(10):
-                i = torch.randint(len(source)-length, (1,), generator=gen).item()
-                x = source[i:i+length].unsqueeze(0).to(device)
-                y = source[i+1:i+length+1].unsqueeze(0).to(device)
+                check_stop()
+                x, y = training_batch(source, targets, model.context, 1, device, gen)
                 losses.append(F.cross_entropy(model(x).flatten(0,1), y.flatten()).item())
         if device.type == 'cuda':
             torch.cuda.synchronize()
@@ -50,11 +51,16 @@ def main():
             perplexity=math.exp(min(loss,80)), sample=sample, generation_seconds=time.perf_counter()-start,
             peak_vram_bytes=torch.cuda.max_memory_allocated() if device.type == 'cuda' else 0))
         del model
-    out = ROOT / 'Ket_Qua/Danh_Gia_BimBom' / (datetime.now().strftime('%Y%m%d_%H%M%S_%f') + '.json')
+    out = ROOT / 'Ket_Qua/Danh_Gia' / (datetime.now().strftime('%Y%m%d_%H%M%S_%f') + '.json')
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(rows, ensure_ascii=False, indent=2), encoding='utf-8')
     print(out)
-    print('Chỉ so sánh loss trực tiếp khi dataset/tokenizer giống nhau.')
+    print('Chỉ so sánh loss trực tiếp khi dataset/tokenizer và giai đoạn giống nhau.')
+
+
+def main():
+    with session_lock(kind='evaluate'):
+        evaluate_main()
 if __name__ == '__main__':
     main()
 

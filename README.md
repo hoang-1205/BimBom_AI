@@ -1,43 +1,33 @@
-# BimBom AI — Bắt đầu từ trạng thái chưa huấn luyện
+# BimBom AI
 
-## Trạng thái bàn giao
+Đã nâng cấp theo kế hoạch ngày 18/11/2026, **không tạo bản sao lưu**. Mô hình chính vẫn chưa được huấn luyện; dữ liệu và checkpoint thử nghiệm không được đưa vào dự án.
 
-Dự án chưa có checkpoint, tokenizer đã học, chỉ mục tra cứu hay kết quả huấn luyện. Không chạy huấn luyện trong lần chuẩn bị này. Mã, môi trường Python, tài liệu gốc và cấu hình được giữ lại. Bộ kiểm thử, bản sao lưu và kế hoạch nâng cấp cũ đã được gỡ để dự án gọn hơn.
-
-## Bạn muốn làm gì?
-
-- [Hiểu chức năng và giới hạn](Huong_dan_va_cach_su_dung/GIOI_THIEU.md)
-- [Phân tích hồ sơ, tra cứu và gửi kết quả cho giáo viên](Huong_dan_va_cach_su_dung/CACH_SU_DUNG.md)
-- [Chuẩn bị dữ liệu và huấn luyện từ đầu](Huong_dan_va_cach_su_dung/HUAN_LUYEN.md)
-- [Các bước chi tiết dành cho người huấn luyện](Huong_dan_va_cach_su_dung/CAC_BUOC_HUAN_LUYEN_CHO_NGUOI_HUAN_LUYEN.md)
-
-## Thư mục
-
-```text
-D:\BimBom_AI\
-├── Hoc_BimBom\                     Tài liệu học và tra cứu
-├── Ket_Qua\                        Kết quả và file Markdown cho giáo viên
-├── Du_Lieu\Phan_Tich\              Hồ sơ mẫu và tiêu chí nghề nghiệp
-├── Huong_dan_va_cach_su_dung\       Tài liệu giới thiệu, sử dụng và huấn luyện
-├── Model_BimBomAI\                  Mã hỗ trợ, setup và môi trường .venv
-├── Chinh_Che_Do.py                  Cấu hình CPU/CUDA và mô hình
-├── phan_tich.py                     Phân tích theo tiêu chí, không cần huấn luyện
-├── train.py                         Huấn luyện mô hình ngôn ngữ
-├── chat.py                          Chat, tra cứu và tìm kỹ năng
-└── README.md                       Đọc đầu tiên
-```
-
-Các thư mục checkpoint, tokenizer, chỉ mục và kho kỹ năng chỉ được tạo khi sử dụng. Hoc_BimBom và Ket_Qua nằm cùng cấp ngoài thư mục gốc.
-
-## Lệnh đầu tiên
-
-Mở PowerShell:
+## Bắt đầu
 
 ```powershell
 cd D:\BimBom_AI
-$env:PYTHONIOENCODING = 'utf-8'
-.\Model_BimBomAI\.venv\Scripts\python.exe Model_BimBomAI\kiem_tra.py
+.\run.cmd status bimbom
+.\run.cmd chat bimbom
+.\run.cmd train bimbom
+.\run.cmd stop bimbom
 ```
 
-Kiểm tra môi trường không huấn luyện mô hình. Đọc HUAN_LUYEN.md trước khi chạy train.py. Phân tích theo tiêu chí và tra cứu tài liệu dùng được khi chưa có mô hình đã học.
+Lệnh train hỏi số bước **muốn học thêm**, tự chọn checkpoint hợp lệ và tương thích. Nếu chưa có checkpoint, cần thêm TXT/MD đã kiểm tra vào `Hoc_BimBom\Du_Lieu_Huan_Luyen\Pretrain`. Chat khi chưa có checkpoint chỉ quản lý/trích dẫn bộ nhớ; không giả lập câu trả lời của mô hình.
+
+Đọc [hướng dẫn sử dụng](Huong_dan_va_cach_su_dung/CACH_SU_DUNG.md) để dùng `/remember`, `/correct`, duyệt dữ liệu SFT, tiếp tục huấn luyện và cấu hình chế độ.
+
+`run stop bimbom` (hoặc `run tat bimbom`) tắt phiên đang chạy. Chat thoát kể cả khi đang chờ nhập; train hoàn tất bước hiện tại và lưu checkpoint rồi dừng. Trong cửa sổ chat có thể gõ `/stop`, `/tat` hoặc `/exit`.
+
+## Các phần chính
+
+- `Run_BimBom.py`, `run.cmd`: bộ điều khiển chat/train/status/stop, dùng duy nhất `Model_BimBomAI\.venv`.
+- `Chat_BimBom.py`: hội thoại, bộ nhớ xác nhận, hàng chờ duyệt; không tự huấn luyện khi chat.
+- `Chinh_Che_Do.py`: thiết bị, kiến trúc, chế độ chat và giới hạn tài nguyên.
+- `train.py`: Pretrain/SFT, lưu và khôi phục model, optimizer, RNG, scaler, tokenizer, dữ liệu.
+- `Model_BimBomAI\Ma_Nguon`: kiểm tra checkpoint, bộ nhớ, suy luận, dữ liệu và khóa phiên.
+- `Hoc_BimBom`: tài liệu gốc, hội thoại thô, hàng chờ, dữ liệu Pretrain và Chat_SFT tách biệt.
+- `Bo_Nho_BimBom`, `Ky_Nang_BimBom_Hoc_Duoc`: ghi nhớ và ví dụ đã xác nhận.
+- `Ket_Qua`: checkpoint, dữ liệu đã xử lý, nhật ký và đánh giá.
+
+Các chức năng phân tích hồ sơ và lệnh `chat.py` cũ vẫn được giữ. Dữ liệu mẫu trong `Du_Lieu\Phan_Tich` không tự trở thành dữ liệu huấn luyện. Lệnh `--include-approved` cũ nay báo hướng dẫn chuyển sang SFT để tránh trộn sai dữ liệu.
 
