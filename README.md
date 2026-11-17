@@ -31,8 +31,11 @@ Lệnh train hỏi số bước **muốn học thêm**, tự chọn checkpoint h
 
 Các chức năng phân tích hồ sơ và lệnh `chat.py` cũ vẫn được giữ. Dữ liệu mẫu trong `Du_Lieu\Phan_Tich` không tự trở thành dữ liệu huấn luyện. Lệnh `--include-approved` cũ nay báo hướng dẫn chuyển sang SFT để tránh trộn sai dữ liệu.
 
-## Cấu trúc 
+## Cấu trúc thư mục dự án
 
+Cấu trúc dưới đây được tổng hợp từ ảnh cây thư mục VS Code và các đường dẫn đã sử dụng trong quá trình xây dựng dự án. Một số tệp/thư mục con có thể thay đổi khi cập nhật mã nguồn.
+
+```text
 BimBom_AI/
 ├── Bo_Nho_BimBom/                 # Bộ nhớ phục vụ trò chuyện
 │   ├── Chi_Muc/                  # Chỉ mục tìm kiếm
@@ -64,3 +67,4 @@ BimBom_AI/
 ├── Run_BimBom.py                 # Thành phần điều khiển tác vụ
 ├── requirements.txt              # Các thư viện Python
 └── README.md                     # Giới thiệu dự án (tệp này)
+```
