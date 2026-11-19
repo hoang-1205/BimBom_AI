@@ -2,6 +2,8 @@
 
 [Giới thiệu](GIOI_THIEU.md) | [Phân tích hồ sơ và lệnh cũ](PHAN_TICH_VA_LENH_CU.md)
 
+Hướng dẫn riêng về chế độ và mức sử dụng tài nguyên: [Chỉnh chế độ và cấu hình](Huong_dan_che_do_va_cau_hinh.md).
+
 Các lệnh PowerShell bên dưới chạy tại `D:\BimBom_AI`, không phải tại thư mục hướng dẫn. Các lệnh bắt đầu bằng `/` được nhập bên trong cửa sổ chat.
 
 ## 1. Khởi chạy

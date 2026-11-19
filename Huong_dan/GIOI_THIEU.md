@@ -5,6 +5,7 @@
 ## Bắt đầu đọc từ đâu?
 
 - Mở/tắt AI, chat, dạy bộ nhớ, huấn luyện và xử lý lỗi: [CACH_SU_DUNG.md](CACH_SU_DUNG.md).
+- Chỉnh chế độ chat, CPU/GPU, mức tải và thông số huấn luyện: [Huong_dan_che_do_va_cau_hinh.md](Huong_dan_che_do_va_cau_hinh.md).
 - Phân tích hồ sơ theo tiêu chí, xuất báo cáo cho giáo viên và các lệnh tương thích cũ: [PHAN_TICH_VA_LENH_CU.md](PHAN_TICH_VA_LENH_CU.md).
 
 Hướng dẫn sử dụng hiện tại nằm trong thư mục này. Tệp `HUONG_DAN_BIMBOM_AI.md` ở gốc dự án chỉ dẫn đến đây để tránh có nhiều bản hướng dẫn đầy đủ bị lệch nhau.
