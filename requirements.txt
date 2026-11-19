@@ -1,0 +1,2 @@
+# Dung Model_BimBomAI/setup.ps1 de chon dung ban PyTorch CPU/CUDA.
+-r Model_BimBomAI/requirements.txt
